@@ -4,6 +4,7 @@ Platformer Game
 import arcade
 import utils
 import setups
+import text_manager
 from  constants import *
 
 
@@ -26,9 +27,12 @@ class MyGame(arcade.Window):
         self.coin_list = None
         self.wall_list = None
         self.player_list = None
+        self.text_list = None
 
         # Separate variable that holds the player sprite
         self.player_sprite = None
+        self.professor_sprite = None
+        self.stair_sprite = None
 
         # Our physics engine
         self.physics_engine = None
@@ -37,12 +41,20 @@ class MyGame(arcade.Window):
         self.view_bottom = 0
         self.view_left = 0
 
-        self.place = "home"
+        self.place = "starting_sequence"
         self.planet = None
         self.rocket_flying = False
         self.choose_planet = False
         self.planet_gravity = None
+        self.enable_physics = None
+        self.home_count = 0
+        self.home_conversation = False
+        self.planet_conversation = False
 
+        self.text_strings = []
+        self.top_string = ''
+        self.text_val = 0
+        self.in_conversation = []
         arcade.set_background_color(arcade.csscolor.BLACK)
 
 
@@ -50,6 +62,9 @@ class MyGame(arcade.Window):
         """ Set up the game here. Call this function to restart the game. """
         if self.place == "home":
             setups.home(self)
+
+        elif self.place == 'starting_sequence':
+            setups.starting_sequence(self)
 
         elif self.place == "start_from_home":
             setups.start_from_home(self)
@@ -63,23 +78,35 @@ class MyGame(arcade.Window):
         # Clear the screen to the background color
         arcade.start_render()
 
-        if self.place == 'on_planet' and self.planet == 'mars':
-            arcade.draw_lrwh_rectangle_textured(-500, 0,
-                                            1.6*self.background.width/self.background.height*SCREEN_WIDTH, 1.6*SCREEN_HEIGHT,
-                                            self.background)
-        else:
+        try:
+            if self.place == 'on_planet' and self.planet == 'mars':
+                arcade.draw_lrwh_rectangle_textured(-500, 0,
+                                                1.6*self.background.width/self.background.height*SCREEN_WIDTH, 1.6*SCREEN_HEIGHT,
+                                                self.background)
+            else:
+                arcade.draw_lrwh_rectangle_textured(-500, 0,
+                                                1.1*self.background.width/self.background.height*SCREEN_WIDTH, 1.1*SCREEN_HEIGHT,
+                                                self.background)
+        except AttributeError:
+            pass
 
-            arcade.draw_lrwh_rectangle_textured(-500, 0,
-                                            1.1*self.background.width/self.background.height*SCREEN_WIDTH, 1.1*SCREEN_HEIGHT,
-                                            self.background)
         # Draw our sprites
         self.wall_list.draw()
         self.coin_list.draw()
         self.player_list.draw()
+        self.text_list.draw()
+        text_manager.draw_text(self)
+        arcade.draw_text(self.top_string, self.view_left + int(0.5 * SCREEN_WIDTH), self.view_bottom + int(0.9 * SCREEN_HEIGHT),
+                         arcade.color.WHITE, 20 , align = 'center', anchor_x = 'center', anchor_y = 'center')
 
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
+
+        if self.in_conversation:
+            if key == arcade.key.SPACE:
+                self.text_val += 1
+            return
 
         if key == arcade.key.UP or key == arcade.key.W:
             if self.physics_engine.can_jump():
@@ -89,12 +116,9 @@ class MyGame(arcade.Window):
         elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.SPACE:
-            if abs(self.player_sprite.center_x - 275) < 50 and abs(self.player_sprite.center_y - 142.5) <50:
+            if self.stair_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)):
                 self.choose_planet = True
                 utils.add_planets(self)
-                # self.place = 'start_from_home'
-                # self.rocket_flying = True
-                # self.setup()
         elif key == arcade.key.ESCAPE:
             self.place = 'home'
             self.setup()
@@ -113,25 +137,20 @@ class MyGame(arcade.Window):
             hit_planet = False
             x = x + self.view_left
             y = y + self.view_bottom
-            print(self.view_left)
             if self.mars_sprite.collides_with_point((x,y)):
                 self.planet = 'mars'
-                print('this is the mars')
                 self.planet_gravity = 3.711/9.81
                 hit_planet = True
             elif self.sun_sprite.collides_with_point((x,y)):
                 self.planet = 'sun'
-                print('this is the sun')
                 self.planet_gravity = 274/9.81
                 hit_planet = True
             elif self.moon_sprite.collides_with_point((x,y)):
                 self.planet = 'moon'
-                print('this is the moon')
                 self.planet_gravity = 1.62/9.81
                 hit_planet = True
             elif self.jupiter_sprite.collides_with_point((x,y)):
                 self.planet = 'jupiter'
-                print('this is the jupiter')
                 self.planet_gravity = 24.8/9.81
                 hit_planet = True
             if hit_planet:
@@ -146,9 +165,31 @@ class MyGame(arcade.Window):
         """ Movement and game logic """
 
         # Move the player with the physics engine
-        self.physics_engine.update()
+        if self.enable_physics:
+            self.physics_engine.update()
 
-        # --- Manage Scrolling ---
+        self.top_string = ''
+
+        if self.place == 'home':
+            if self.stair_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)):
+                if not self.planet_conversation:
+                    utils.text_sprites(self)
+                    self.text_strings = [
+                        'Super! \n Das ist  \n unsere Rakete!',
+                        'Damit können \n wir fast überall \n hinfliegen!',
+                        'Woanders sind \n die Bedingungen aber \n ganz anders!',
+                        'Die Schwerkraft \n ist z.B. auf dem \n Jupiter viel stärker!',
+                        'Wenn du auf\n der Leiter stehst \n und das Leerzeichen \n drückst ...',
+                        '... kannst du \n dir aussuchen, wohin \n dich die ...',
+                        'Rakete bringen soll! \n Versuche es!'
+                    ]
+                    if self.text_val == len(self.text_strings) :
+                        self.planet_conversation = True
+                elif self.choose_planet:
+                    self.top_string = 'Wähle mit der Maus ein Ziel aus!'
+                else:
+                    self.top_string =  'Drücke Leertaste um ein Ziel auszuwählen!'
+
 
         # Track if we need to change the viewport
         if self.rocket_flying:
@@ -157,7 +198,7 @@ class MyGame(arcade.Window):
                 self.place = 'on_planet'
                 self.rocket_flying = False
                 self.setup()
-        else:
+        elif self.enable_physics:
             changed = False
 
             # Scroll left

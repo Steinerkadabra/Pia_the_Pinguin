@@ -24,13 +24,19 @@ def home_sprites(object):
 
     image_source = "pictures/stair.png"
 
-    stair_sprite = arcade.Sprite(image_source, 1.1, hit_box_algorithm='Detailed')
+    object.stair_sprite = arcade.Sprite(image_source, 1.1)
 
-    stair_sprite.center_x = 275
-    stair_sprite.center_y = 142.5
-    stair_sprite.collision_radius = 1
-    object.wall_list.append(stair_sprite)
-    
+    object.stair_sprite.center_x = 275
+    object.stair_sprite.center_y = 142.5
+    object.stair_sprite.alpha = 0
+    object.coin_list.append(object.stair_sprite)
+
+    sprite = arcade.Sprite(image_source, 1.1, hit_box_algorithm='Detailed')
+    sprite.center_x = 275
+    sprite.center_y = 142.5
+    sprite.collision_radius = 1
+    object.wall_list.append(sprite)
+
 def planet_sprites(object):
 
     # Create the ground
@@ -54,10 +60,6 @@ def planet_sprites(object):
     image_source = "pictures/elephant.png"
     real_size = 3.2
     sprite = arcade.Sprite(image_source, 1, hit_box_algorithm='Detailed')
-    height = object.player_sprite.height
-    factor = real_size * object.player_sprite.height / sprite.height
-    # sprite.height = sprite.height*factor
-    # sprite.width = sprite.width*factor
     sprite.scale = real_size * object.player_sprite.height / sprite.height * sprite.scale
     sprite.center_x = 700
     sprite.center_y = 64 + sprite.height / 2
@@ -66,10 +68,6 @@ def planet_sprites(object):
     image_source = "pictures/palme.png"
     real_size = 12
     sprite = arcade.Sprite(image_source, 1)
-    height = object.player_sprite.height
-    factor = real_size * object.player_sprite.height / sprite.height
-    # sprite.height = sprite.height*factor
-    # sprite.width = sprite.width*factor
     sprite.scale = real_size * object.player_sprite.height / sprite.height * sprite.scale
     sprite.center_x = 1600
     sprite.center_y = 64 + sprite.height / 2
@@ -78,10 +76,6 @@ def planet_sprites(object):
     image_source = "pictures/hydrant.png"
     real_size = 0.9
     sprite = arcade.Sprite(image_source, 0.1)
-    height = object.player_sprite.height
-    factor = real_size * object.player_sprite.height / sprite.height
-    # sprite.height = sprite.height*factor
-    # sprite.width = sprite.width*factor
     sprite.scale = real_size * object.player_sprite.height / sprite.height * sprite.scale
     sprite.center_x = 300
     sprite.center_y = 64 + sprite.height / 2
@@ -91,10 +85,6 @@ def planet_sprites(object):
     image_source = "pictures/cake.png"
     real_size = 0.3
     sprite = arcade.Sprite(image_source, 0.1)
-    height = object.player_sprite.height
-    factor = real_size * object.player_sprite.height / sprite.height
-    # sprite.height = sprite.height*factor
-    # sprite.width = sprite.width*factor
     sprite.scale = real_size * object.player_sprite.height / sprite.height * sprite.scale
     sprite.center_x = 100
     sprite.center_y = 64 + sprite.height / 2
@@ -131,3 +121,19 @@ def add_planets(object):
     object.jupiter_sprite.center_x = center_x - 250
     object.jupiter_sprite.center_y = center_y
     object.coin_list.append(object.jupiter_sprite)
+
+def text_sprites(object):
+    object.in_conversation = True
+    image_source = "professor.png"
+    object.professor_sprite = arcade.Sprite(image_source, 0.5*PROFESSOR_SCALING)
+
+    object.professor_sprite.center_x = 800+object.view_left + 239
+    object.professor_sprite.center_y = 190
+    object.text_list.append(object.professor_sprite)
+
+    image_source = "bubble_rt.png"
+    bubble_sprite = arcade.Sprite(image_source, 0.5*0.4 * PROFESSOR_SCALING)
+    bubble_sprite.center_x = object.professor_sprite.center_x - 0.675 * bubble_sprite.width
+    bubble_sprite.center_y = object.professor_sprite.center_y - 0.2 * bubble_sprite.height
+    object.text_list.append(bubble_sprite)
+
