@@ -15,14 +15,14 @@ def starting_sequence(object):
     object.coin_list = arcade.SpriteList()
     object.text_list = arcade.SpriteList()
 
-    image_source = "professor.png"
+    image_source = "pictures/professor.png"
     object.professor_sprite = arcade.Sprite(image_source, PROFESSOR_SCALING)
 
     object.professor_sprite.center_x = 1000
     object.professor_sprite.center_y = 400
     object.text_list.append(object.professor_sprite)
 
-    image_source = "bubble_rt.png"
+    image_source = "pictures/bubble_rt.png"
     bubble_sprite = arcade.Sprite(image_source, 0.4*PROFESSOR_SCALING)
     bubble_sprite.center_x = object.professor_sprite.center_x - 0.675 * bubble_sprite.width
     bubble_sprite.center_y = object.professor_sprite.center_y - 0.2  * bubble_sprite.height
