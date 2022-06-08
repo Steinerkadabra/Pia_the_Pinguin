@@ -45,6 +45,16 @@ def home_sprites(object):
     object.coin_list.append(object.whiteboard_sprite)
 
 
+    image_source = "pictures/telescope.png"
+
+    object.telescope_sprite = arcade.Sprite(image_source, 0.3,)
+
+    object.telescope_sprite.center_x = 400 + 1050
+    object.telescope_sprite.center_y = 142+ 60
+    object.telescope_sprite.collision_radius = 10
+    object.coin_list.append(object.telescope_sprite)
+
+
 
 def planet_sprites(object):
 

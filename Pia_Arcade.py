@@ -67,6 +67,10 @@ class MyGame(arcade.Window):
         self.close_button = None
         self.do_peer_review = False
         self.peer_review_text = ''
+        self.help_sprite_list = None
+        self.help_sprite = None
+        self.help_active = False
+        self.telescope_sprite = None
 
         # Our physics engine
         self.physics_engine = None
@@ -76,8 +80,8 @@ class MyGame(arcade.Window):
         self.view_left = 0
 
         # self.place = "starting_sequence"
-        self.place = "telescope_view"
-        # self.place = 'home'
+        # self.place = "telescope_view"
+        self.place = 'home'
         self.planet = None
         self.rocket_flying = False
         self.choose_planet = False
@@ -87,6 +91,7 @@ class MyGame(arcade.Window):
         self.home_conversation = False
         self.planet_conversation = False
         self.whiteboard_conversation = False
+        self.telescope_conversation = False
 
         self.current_money = 0
 
@@ -164,6 +169,8 @@ class MyGame(arcade.Window):
         self.coin_list.draw()
         self.collect_coin_list.draw()
         self.player_list.draw()
+        if self.help_active:
+            self.help_sprite_list.draw()
         self.text_list.draw()
         self.lightcurve_list.draw()
         if self.place != 'whiteboard':
@@ -190,7 +197,11 @@ class MyGame(arcade.Window):
 
         # if key == arcade.key.SPACE:
         #     print(self.player_sprite.center_x, self.player_sprite.center_y)
-
+        just_closed_help = False
+        if self.help_active:
+            self.help_sprite_list = arcade.SpriteList()
+            self.help_active = False
+            just_closed_help = True
 
         if self.in_conversation:
             if key == arcade.key.SPACE:
@@ -230,9 +241,22 @@ class MyGame(arcade.Window):
                                         0,
                                         SCREEN_HEIGHT)
                     self.setup()
-            elif key == arcade.key.ESCAPE and self.place != 'start_from_home':
+                elif self.telescope_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)):
+                    self.place = 'telescope_view'
+                    arcade.set_viewport(0,
+                                        SCREEN_WIDTH ,
+                                        0,
+                                        SCREEN_HEIGHT)
+                    self.setup()
+            elif key == arcade.key.ESCAPE and not self.help_active and not self.lightcurve_active:
+            # elif key == arcade.key.ESCAPE and self.place != 'start_from_home':
                 self.place = 'home'
                 self.setup()
+            elif key == arcade.key.H and not self.help_active and not just_closed_help:
+                print("this happens")
+                self.help_active = True
+                setups.help(self)
+
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
@@ -283,6 +307,7 @@ class MyGame(arcade.Window):
                 self.choose_planet = False
                 self.setup()
         elif self.lightcurve_active:
+            print("sahfoasdjofjidsf")
             PIC = self.telescope_stars_list[self.active_pic][0]
             if self.full_button_sprite.collides_with_point((x,y)) and not self.do_peer_review:
                 setups.active_lightcurve(self, PIC)
@@ -369,7 +394,7 @@ class MyGame(arcade.Window):
                     self.text_strings = [
                         'Das ist \n unser Whiteboard!',
                         'Es bildet \n das Zentrum \n unserer Basis',
-                        'Hier \n siehst du welche \n Aufgbaen du erfüllen\n musst',
+                        'Hier \n siehst du welche \n Aufgabaen du erfüllen\n musst',
                         'Du kannst \n jederzeit hierher kommen\n um deinen Fortschritt \n zu sehen',
                         'Sieh ihn \n dir doch gleich\n einmal an!'
                     ]
@@ -377,6 +402,24 @@ class MyGame(arcade.Window):
                         self.whiteboard_conversation = True
                 else:
                     self.top_string =  'Drücke Leertaste um ein deinen Fortschritt zu sehen!'
+
+
+            if self.telescope_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)):
+                if not self.telescope_conversation:
+                    self.player_sprite.change_x = 0
+                    self.player_sprite.change_y = 0
+                    utils.text_sprites(self)
+                    self.text_strings = [
+                        'Das ist \n unser Teleskop!',
+                        'Hiermit \n kannst du dir den \n Nachthimmel ansehen',
+                        'Du \n siehst die \n Lichtkurven vieler\n Sterne.',
+                        'Kannst \n du sie klassifizieren\n oder sogar Planeten \n finden?'
+                    ]
+                    if self.text_val == len(self.text_strings) :
+                        self.telescope_conversation = True
+                else:
+                    self.top_string =  'Drücke Leertaste um das Teleskop zu verwenden!'
+
 
 
 

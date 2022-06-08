@@ -66,7 +66,6 @@ def peer_review_feedback(object, input, true):
 
     if num_correct >0:
         additional_string = 'Übrigens: Die Lichtkurve zeigt auch das Signal '
-
     else:
         additional_string = 'Die Lichtkurve zeigt das Signal '
 
@@ -171,6 +170,7 @@ def active_lightcurve(object, PIC, kind = 'full'): # kind either 'full', 'hours'
 
 def telescope_view(object):
 
+    object.background = arcade.load_texture("pictures/black_background.png")
     # object.in_conversation = True
 
     object.player_list = arcade.SpriteList()
@@ -280,6 +280,7 @@ def home(object):
     object.rocket_sprite.center_y = 142
     object.rocket_sprite.collision_radius = 10
     object.wall_list.append(object.rocket_sprite)
+
 
 
 
@@ -421,3 +422,18 @@ def planet(object):
                                                          object.wall_list,
                                                          GRAVITY *object.planet_gravity)
     object.enable_physics = True
+
+
+def help(object):
+    object.help_sprite_list = arcade.SpriteList()
+    if object.place in ["home", "on_planet", "telescope_view"]:
+        image_source = f"pictures/help_{object.place}.png"
+    else:
+        return
+
+
+    object.help_sprit = arcade.Sprite(image_source, 0.5 )
+
+    object.help_sprit.center_x = object.view_left + int(SCREEN_WIDTH / 2)
+    object.help_sprit.center_y = object.view_bottom + int(SCREEN_HEIGHT / 2)
+    object.help_sprite_list.append(object.help_sprit)
