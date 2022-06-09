@@ -274,7 +274,7 @@ def home(object):
 
     image_source = "pictures/rocket.png"
 
-    object.rocket_sprite = arcade.Sprite(image_source, 1.1, hit_box_algorithm='Detailed')
+    object.rocket_sprite = arcade.Sprite(image_source, 1.1/4, hit_box_algorithm='None')
 
     object.rocket_sprite.center_x = 400 + 600
     object.rocket_sprite.center_y = 142
@@ -303,7 +303,7 @@ def home(object):
 
 def whiteboard(object):
     # Load the background image. Do this in the setup so we don't keep reloading it
-    object.background = arcade.load_texture("pictures/whiteboard_back.jpg")
+    object.background = arcade.load_texture("pictures/whiteboard_back.png")
 
     # Used to keep track of our scrolling
 
@@ -370,12 +370,12 @@ def start_from_home(object):
 
     image_source = "pictures/rocket_flying.png"
 
-    object.rocket_sprite = arcade.Sprite(image_source, 1.1, hit_box_algorithm='Detailed')
+    object.rocket_sprite = arcade.Sprite(image_source, 1.1/5, hit_box_algorithm='None')
 
     object.rocket_sprite.center_x = 400 + 600
     object.rocket_sprite.center_y = 142
     object.rocket_sprite.change_y = ROCKET_SPEED
-    object.rocket_sprite.collision_radius = 10
+    object.rocket_sprite.collision_radius = 5
     object.wall_list.append(object.rocket_sprite)
 
 
