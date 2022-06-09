@@ -81,6 +81,7 @@ class MyGame(arcade.Window):
 
         # self.place = "starting_sequence"
         # self.place = "telescope_view"
+        # self.place = 'whiteboard'
         self.place = 'home'
         self.planet = None
         self.rocket_flying = False
@@ -94,6 +95,8 @@ class MyGame(arcade.Window):
         self.telescope_conversation = False
 
         self.current_money = 0
+        self.money_earned_from_classificiation = 0
+        self.money_earned_from_planet_visits = 0
 
         self.text_strings = []
         self.top_string = ''
@@ -307,7 +310,6 @@ class MyGame(arcade.Window):
                 self.choose_planet = False
                 self.setup()
         elif self.lightcurve_active:
-            print("sahfoasdjofjidsf")
             PIC = self.telescope_stars_list[self.active_pic][0]
             if self.full_button_sprite.collides_with_point((x,y)) and not self.do_peer_review:
                 setups.active_lightcurve(self, PIC)

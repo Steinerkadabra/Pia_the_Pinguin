@@ -46,7 +46,7 @@ def peer_review_feedback(object, input, true):
     earned_money = 0
     moneys = [50, 10, 50, 30]
     for num, correct, not_correct in zip([0,1,2,3], [pulsation_True, spot_True,planet_True,binary_True], [pulsation_False, spot_False,planet_False,binary_False]):
-        if input[num] == True and true[num] == 1:
+        if input[num] == True and true[num] > 0:
             object.peer_review_text += correct
             num_correct += 1
             earned_money += moneys[num]
@@ -100,6 +100,8 @@ def peer_review_feedback(object, input, true):
         object.peer_review_text += additional_string
 
     object.current_money += int(earned_money)
+
+    object.money_earned_from_classificiation += int(earned_money)
 
 
 
@@ -169,7 +171,7 @@ def active_lightcurve(object, PIC, kind = 'full'): # kind either 'full', 'hours'
 
 
 def telescope_view(object):
-
+    object.choose_planet = False
     object.background = arcade.load_texture("pictures/black_background.png")
     # object.in_conversation = True
 
@@ -278,7 +280,7 @@ def home(object):
 
     object.rocket_sprite.center_x = 400 + 600
     object.rocket_sprite.center_y = 142
-    object.rocket_sprite.collision_radius = 10
+    object.rocket_sprite.collision_radius = 0.1
     object.wall_list.append(object.rocket_sprite)
 
 
@@ -351,6 +353,68 @@ def whiteboard(object):
     object.wall_list.append(planets_done_sprite)
 
 
+    classification_done = False
+    val = object.money_earned_from_classificiation
+    if val > 0:
+        classification_done = True
+    vals = []
+
+    got_nan = False
+    i = 0
+    while got_nan == False:
+        try:
+            vals.append(str(val)[i])
+        except IndexError:
+            got_nan = True
+        i = i+1
+    i = 0
+    for digit in vals:
+        sprite1 = arcade.Sprite(f"pictures/digit_{digit}.png", 0.1)
+        sprite1.center_x = CLASSIFICATION_SCORE_POSITION[0] + i*40
+        sprite1.center_y = CLASSIFICATION_SCORE_POSITION[1]
+        object.wall_list.append(sprite1)
+        i = i + 1
+
+    if classification_done:
+        classification_done_sprite = arcade.Sprite(f"pictures/perfect.png", 0.1)
+    else:
+        classification_done_sprite = arcade.Sprite(f"pictures/cross.png", 0.1)
+
+    classification_done_sprite.center_x = TASK2_POSITION[0]
+    classification_done_sprite.center_y = TASK2_POSITION[1]
+    object.wall_list.append(classification_done_sprite)
+
+
+    planet_visits_done = False
+    val = object.money_earned_from_planet_visits
+    if val > 0:
+        planet_visits_done = True
+    vals = []
+
+    got_nan = False
+    i = 0
+    while got_nan == False:
+        try:
+            vals.append(str(val)[i])
+        except IndexError:
+            got_nan = True
+        i = i+1
+    i = 0
+    for digit in vals:
+        sprite1 = arcade.Sprite(f"pictures/digit_{digit}.png", 0.1)
+        sprite1.center_x = PLANET_VISIT_SCORE_POSITION[0] + i*40
+        sprite1.center_y = PLANET_VISIT_SCORE_POSITION[1]
+        object.wall_list.append(sprite1)
+        i = i + 1
+
+    if planet_visits_done:
+        planet_visits_done_sprite = arcade.Sprite(f"pictures/perfect.png", 0.1)
+    else:
+        planet_visits_done_sprite = arcade.Sprite(f"pictures/cross.png", 0.1)
+
+    planet_visits_done_sprite.center_x = TASK3_POSITION[0]
+    planet_visits_done_sprite.center_y = TASK3_POSITION[1]
+    object.wall_list.append(planet_visits_done_sprite)
 
 def start_from_home(object):
     # Load the background image. Do this in the setup so we don't keep reloading it
