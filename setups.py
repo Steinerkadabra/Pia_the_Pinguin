@@ -205,7 +205,7 @@ def telescope_view(object):
 
 
     image_source = "pictures/crosshair.png"
-    object.player_sprite = arcade.Sprite(image_source, CHARACTER_SCALING)
+    object.player_sprite = arcade.Sprite(image_source, CROSSHAIR_SCALING)
     object.player_sprite.center_x = 64
     object.player_sprite.center_y = 96
 

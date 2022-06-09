@@ -147,7 +147,7 @@ def planet_sprites(object):
     real_size = 0.75
 
     for tuple in PLANET_STAR_POSITIONS:
-        sprite = arcade.Sprite(image_source, 1, hit_box_algorithm='Detailed')
+        sprite = arcade.Sprite(image_source, 1, hit_box_algorithm='Simple')
         sprite.scale = real_size * object.player_sprite.height / sprite.height * sprite.scale
         sprite.center_x = tuple[0]
         sprite.center_y = tuple[1]

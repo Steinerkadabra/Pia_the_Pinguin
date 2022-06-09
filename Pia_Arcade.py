@@ -339,8 +339,25 @@ class MyGame(arcade.Window):
     def on_update(self, delta_time):
         """ Movement and game logic """
         # Move the player with the physics engine
+
         if self.enable_physics:
             self.physics_engine.update()
+        if not self.place == "telescope_view":
+            if self.place == 'home':
+                if self.player_sprite.change_x < -1:
+                    self.player_sprite.texture = arcade.load_texture("pictures/player_left_wo.png")
+                elif self.player_sprite.change_x > 1:
+                    self.player_sprite.texture = arcade.load_texture("pictures/player_right_wo.png")
+                else:
+                    self.player_sprite.texture = arcade.load_texture("pictures/player.png")
+            else:
+                if self.player_sprite.change_x < -1:
+                    self.player_sprite.texture = arcade.load_texture("pictures/player_left_w.png")
+                elif self.player_sprite.change_x > 1:
+                    self.player_sprite.texture = arcade.load_texture("pictures/player_right_w.png")
+                else:
+                    self.player_sprite.texture = arcade.load_texture("pictures/player_w.png")
+
 
         self.top_string = ''
 
