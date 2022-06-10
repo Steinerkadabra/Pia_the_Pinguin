@@ -38,7 +38,8 @@ class MyGame(arcade.Window):
         self.text_list = None
         self.telescope_stars_list = loadtxt('stars_list.txt')
         for star in self.telescope_stars_list:
-            star[-1] = 0 # set all stars to not peer reviewed
+            star[9] = 0 # set all stars to not peer reviewed
+            star[12] = 0 # set all planets to not visited
         self.telescope_list = arcade.SpriteList()
         self.lightcurve_list = arcade.SpriteList()
         for i in range(len((self.telescope_stars_list.T)[0])):
@@ -61,16 +62,23 @@ class MyGame(arcade.Window):
         self.days_button_sprite = None
         self.hours_button_sprite = None
         self.classification_sprites = [None, None, None, None]
+        self.safety_hazard_sprites = [None, None, None]
         self.classification_values = [False, False, False, False]
+        self.safety_hazard =  [False, False, False]
         self.lightcurve_active_kind = 'full'
         self.send_results_sprite = None
+        self.go_to_planet_visit_sprite = None
+        self.james_webb_sprite = None
         self.close_button = None
         self.do_peer_review = False
+        self.do_planet_visit = False
+        self.do_james_webb_report =False
         self.peer_review_text = ''
         self.help_sprite_list = None
         self.help_sprite = None
         self.help_active = False
         self.telescope_sprite = None
+        self.visit_exoplanet_launch_sprite = None
 
         # Our physics engine
         self.physics_engine = None
@@ -102,7 +110,8 @@ class MyGame(arcade.Window):
         self.top_string = ''
         self.text_val = 0
         self.in_conversation = False
-
+        self.return_from_planet_visit = False
+        self.return_reason = 0
 
 
 
@@ -223,8 +232,8 @@ class MyGame(arcade.Window):
                 self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
             elif key == arcade.key.RIGHT or key == arcade.key.D:
                 self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
-            elif key == arcade.key.SPACE and not self.do_peer_review:
-                if self.place == 'telescope_view' and not self.do_peer_review:
+            elif key == arcade.key.SPACE and not self.do_peer_review and not self.do_planet_visit and not self.do_james_webb_report:
+                if self.place == 'telescope_view' and not self.do_peer_review and not self.do_planet_visit and not self.do_james_webb_report:
                     if self.lightcurve_active:
                         self.lightcurve_active = False
                         self.lightcurve_list = arcade.SpriteList()
@@ -256,7 +265,7 @@ class MyGame(arcade.Window):
                 self.place = 'home'
                 self.setup()
             elif key == arcade.key.H and not self.help_active and not just_closed_help:
-                print("this happens")
+                # print("this happens")
                 self.help_active = True
                 setups.help(self)
 
@@ -281,6 +290,8 @@ class MyGame(arcade.Window):
         x = x + self.view_left
         y = y + self.view_bottom
         print(x,y)
+        # print(self.view_left)
+        # print(self.view_bottom)
 
 
 
@@ -311,26 +322,75 @@ class MyGame(arcade.Window):
                 self.setup()
         elif self.lightcurve_active:
             PIC = self.telescope_stars_list[self.active_pic][0]
-            if self.full_button_sprite.collides_with_point((x,y)) and not self.do_peer_review:
+            if self.full_button_sprite.collides_with_point((x,y)) and not self.do_peer_review and not self.do_planet_visit and not self.do_james_webb_report:
                 setups.active_lightcurve(self, PIC)
                 self.lightcurve_active_kind = 'full'
-            elif self.days_button_sprite.collides_with_point((x,y)) and not self.do_peer_review:
+            elif self.days_button_sprite.collides_with_point((x,y)) and not self.do_peer_review and not self.do_planet_visit and not self.do_james_webb_report:
                 setups.active_lightcurve(self, PIC, kind = 'days')
                 self.lightcurve_active_kind = 'days'
-            elif self.hours_button_sprite.collides_with_point((x,y)) and not self.do_peer_review:
+            elif self.hours_button_sprite.collides_with_point((x,y)) and not self.do_peer_review and not self.do_planet_visit and not self.do_james_webb_report:
                 setups.active_lightcurve(self, PIC, kind = 'hours')
                 self.lightcurve_active_kind = 'hours'
-            elif self.send_results_sprite.collides_with_point((x,y)) and self.telescope_stars_list[self.active_pic][-1] == 0:
-                print(self.telescope_stars_list[self.active_pic][5:9])
-                print(self.classification_values)
+            elif self.send_results_sprite.collides_with_point((x,y)) and self.telescope_stars_list[self.active_pic][9] == 0:
+                # print(self.telescope_stars_list[self.active_pic][5:9])
+                # print(self.classification_values)
                 setups.peer_review_feedback(self, self.classification_values, self.telescope_stars_list[self.active_pic][5:9])
                 self.do_peer_review = True
+            elif self.go_to_planet_visit_sprite.collides_with_point((x,y)) and self.telescope_stars_list[self.active_pic][12] == 0:
+                setups.go_to_planet_menu(self)
+                self.do_planet_visit = True
+            elif self.go_to_planet_visit_sprite.collides_with_point((x,y)):
+                setups.james_webb_report(self)
+                self.do_james_webb_report = True
+
             elif self.do_peer_review:
                 if self.close_button.collides_with_point((x,y)):
                     self.do_peer_review = False
                     self.peer_review_text = ''
-                    self.telescope_stars_list[self.active_pic][-1] = 1
+                    self.telescope_stars_list[self.active_pic][9] = 1
                     setups.active_lightcurve(self, PIC, kind=self.lightcurve_active_kind)
+            elif self.do_james_webb_report:
+                if self.close_button.collides_with_point((x,y)):
+                    self.do_james_webb_report = False
+                    setups.active_lightcurve(self, PIC, kind=self.lightcurve_active_kind)
+
+            elif self.do_planet_visit:
+                if self.close_button.collides_with_point((x,y)):
+                    self.do_planet_visit = False
+                    setups.active_lightcurve(self, PIC, kind=self.lightcurve_active_kind)
+
+                elif self.visit_exoplanet_launch_sprite.collides_with_point((x,y)):
+                    self.place = 'start_from_home'
+                    self.rocket_flying = True
+                    self.do_planet_visit = False
+                    setups.active_lightcurve(self, PIC, kind=self.lightcurve_active_kind)
+                    self.planet =f"PIC"
+                    self.lightcurve_active = False
+                    self.lightcurve_list = arcade.SpriteList()
+                    self.classification_values = [False, False, False, False]
+                    self.lightcurve_active_kind = 'full'
+                    self.planet_gravity = self.telescope_stars_list[self.active_pic][11]/9.81
+                    # self.planet_gravity =10/9.81
+                    self.current_money -= 300
+
+                    arcade.set_viewport(57,
+                                        SCREEN_WIDTH + 57,
+                                        0,
+                                        SCREEN_HEIGHT + 0)
+                    self.setup()
+
+                else:
+                    for i in range(3):
+                        if self.safety_hazard_sprites[i].collides_with_point((x,y)):
+                            if self.safety_hazard[i]:
+                                self.current_money += 100
+                            else:
+                                self.current_money -= 100
+
+                            self.safety_hazard[i] = not self.safety_hazard[i]
+                            # print( self.telescope_stars_list[self.active_pic])
+                            setups.go_to_planet_menu(self)
+                            break
             else:
                 for i in range(4):
                     if self.classification_sprites[i].collides_with_point((x,y)):

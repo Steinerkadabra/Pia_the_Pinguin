@@ -3,6 +3,95 @@ from  constants import *
 import utils
 
 
+def james_webb_report(object):
+    object.coin_list = arcade.SpriteList()
+
+
+    image_source = f'pictures/airmail.png'
+
+    sprite = arcade.Sprite(image_source, 0.8)
+    sprite.center_x = object.view_left + int(SCREEN_WIDTH / 2)
+    sprite.center_y = object.view_bottom + int(SCREEN_HEIGHT / 2)
+    object.lightcurve_list.append(sprite)
+
+    image_source = f'pictures/close.png'
+
+    object.close_button = arcade.Sprite(image_source, 0.05)
+    object.close_button.center_x = object.view_left + int(SCREEN_WIDTH / 2) -450
+    object.close_button.center_y = object.view_bottom + int(SCREEN_HEIGHT / 2) + 240
+    object.lightcurve_list.append(object.close_button)
+
+
+    cold_True = 'Auf dem Planeten ist es so kalt, dass ein\n' + 'Kälteschutz unbedingt nötig ist!\n'
+
+    gas_True = 'Es sieht so aus, als ob sich sehr viel Giftas\n' + 'auf dem Planeten befinden! Fahr bitte nur mit\n' + 'einer entsprechenden Gasmaske hin!\n'
+
+    hot_True = 'Wir wissen nicht genau wie heiß es auf\n' + 'dem Planeten ist, aber flieg bitte nicht ohne!\n' +'Wärmeschutz hin!\n'
+
+
+
+    none_True = 'Für diesen Planeten ist keine besonderen\n' + 'Schutzausrüstung notwendig!\n'
+
+    object.peer_review_text = 'Liebe Pia,\n \n' + f'Das Kaiserpinguinen Teleskop hat sich PIC {int(object.telescope_stars_list[object.active_pic][0])} genau angesehen.\n'
+    all_False = True
+    if int(object.telescope_stars_list[object.active_pic][13]) == 1:
+        object.peer_review_text += gas_True
+        all_False = False
+    if int(object.telescope_stars_list[object.active_pic][14]) == 1:
+        object.peer_review_text += cold_True
+        all_False = False
+    if int(object.telescope_stars_list[object.active_pic][15]) == 1:
+        object.peer_review_text += hot_True
+        all_False = False
+
+    if all_False:
+        object.peer_review_text += none_True
+
+
+    object.object.peer_review_text += '\n' + 'Diese Untersuchung hat 50 Geld gekostet!\n'
+    object.current_money -= 50
+
+
+
+
+
+
+def go_to_planet_menu(object):
+    object.coin_list = arcade.SpriteList()
+
+    image_source = f'pictures/exoplanet_visit_start.png'
+
+    sprite = arcade.Sprite(image_source, 0.8)
+    sprite.center_x = object.view_left + int(SCREEN_WIDTH / 2)
+    sprite.center_y = object.view_bottom + int(SCREEN_HEIGHT / 2)
+    object.lightcurve_list.append(sprite)
+
+    image_source = f'pictures/close.png'
+
+    object.close_button = arcade.Sprite(image_source, 0.05)
+    object.close_button.center_x = object.view_left + int(SCREEN_WIDTH / 2) -450
+    object.close_button.center_y = object.view_bottom + int(SCREEN_HEIGHT / 2) + 240
+    object.lightcurve_list.append(object.close_button)
+
+    hazard_names = ['gas_mask', 'cold', 'hot']
+    for i in range(3):
+        if object.safety_hazard[i]:
+            image_source = f'pictures/hazard_colour_{hazard_names[i]}.png'
+        else:
+            image_source = f'pictures/hazard_black_{hazard_names[i]}.png'
+        object.safety_hazard_sprites[i] = arcade.Sprite(image_source, 0.085)
+        object.safety_hazard_sprites[i].center_x = object.view_left + int(SCREEN_WIDTH *2.75/10)+ int(SCREEN_WIDTH*i/4.3)
+        object.safety_hazard_sprites[i].center_y = object.view_bottom + int(SCREEN_HEIGHT*(11)/20)
+        object.lightcurve_list.append(object.safety_hazard_sprites[i])
+
+    image_source = f'pictures/rocket.png'
+
+    object.visit_exoplanet_launch_sprite = arcade.Sprite(image_source, 0.075)
+    object.visit_exoplanet_launch_sprite.center_x = object.view_left + int(SCREEN_WIDTH * 8/ 12)
+    object.visit_exoplanet_launch_sprite.center_y = object.view_bottom + int(SCREEN_HEIGHT *0.8/3)
+    object.lightcurve_list.append(object.visit_exoplanet_launch_sprite)
+
+
 def peer_review_feedback(object, input, true):
     object.coin_list = arcade.SpriteList()
 
@@ -23,16 +112,16 @@ def peer_review_feedback(object, input, true):
 
     num_correct = 0
 
-    pulsation_True = 'Uns wurde bestätigt, dass deine Klasifizierung als\n' + 'pulsierender Stern korrekt war! Du hast 50 Gold verdient!\n'
-    pulsation_False = 'Uns wurde leider mitgeteilt dass deine Klasifizierung als\n' + 'pulsierender Stern nicht korrekt war! \n' + \
+    pulsation_True = 'Uns wurde bestätigt, dass deine Klassifizierung als\n' + 'pulsierender Stern korrekt war! Du hast 50 Gold verdient!\n'
+    pulsation_False = 'Uns wurde leider mitgeteilt dass deine Klassifizierung als\n' + 'pulsierender Stern nicht korrekt war! \n' + \
                        'Wir müssen deshalb leider 25 Gold abziehen!\n'
 
     spot_True = 'Super! Es handelt sich tatsächlich um einen Sternfleck!\n' + 'Du hast 10 Gold verdient!\n'
     spot_False = 'Der Sternfleck, den du in dieser Lichtkurve entdeckt hast\n' + 'konnte uns leider nicht bestätigt werden! \n' + \
                        'Wir müssen deshalb leider 5 Gold abziehen!\n'
 
-    planet_True = 'Nach einreichender Kontrolle weltweiter Wissenschaftler hat sich\n' + 'herausgestellt das es sich tatsächlich um einen Planeten handelt!\n' +'Du hast 50 Gold verdient!\n'
-    planet_False = 'Selbst nach intensiver Suche von mehreren Teams weltweit\n' + 'konnte der Planet leider nicht gefunden werden! \n' + \
+    planet_True = 'Nach einreichender Kontrolle weltweiter Wissenschaftler hat sich\n' + 'herausgestellt das es sich tatsächlich um einen Exoplaneten handelt!\n' +'Du hast 50 Gold verdient!\n'
+    planet_False = 'Selbst nach intensiver Suche von mehreren Teams weltweit\n' + 'konnte der Exoplanet leider nicht gefunden werden! \n' + \
                     'Wir müssen deshalb leider 25 Gold abziehen!\n'
 
     binary_True = 'Wow! Viele Teams beschäftigen sich bereits mit einer genaueren\n' + 'Analyse des von dir entdeckten Doppelsterns!\n' +'Du hast 30 Gold verdient!\n'
@@ -158,7 +247,7 @@ def active_lightcurve(object, PIC, kind = 'full'): # kind either 'full', 'hours'
         object.classification_sprites[i].center_y = object.view_bottom + int(SCREEN_HEIGHT*(9-i)/10)
         object.lightcurve_list.append(object.classification_sprites[i])
 
-    if object.telescope_stars_list[object.active_pic][-1] == 0:
+    if object.telescope_stars_list[object.active_pic][9] == 0:
         image_source = f'pictures/pigeon_letter.png'
     else:
         image_source = f'pictures/pigeon_letter_grey.png'
@@ -167,6 +256,24 @@ def active_lightcurve(object, PIC, kind = 'full'): # kind either 'full', 'hours'
     object.send_results_sprite.center_x = object.view_left + int(SCREEN_WIDTH * 11/ 12)
     object.send_results_sprite.center_y = object.view_bottom + int(SCREEN_HEIGHT *2/5)
     object.lightcurve_list.append(object.send_results_sprite)
+
+    if object.telescope_stars_list[object.active_pic][12] == 0:
+        image_source = f'pictures/rocket.png'
+    else:
+        image_source = f'pictures/rocket_grey.png'
+
+    object.go_to_planet_visit_sprite = arcade.Sprite(image_source, 0.1)
+    object.go_to_planet_visit_sprite.center_x = object.view_left + int(SCREEN_WIDTH * 1/ 12)
+    object.go_to_planet_visit_sprite.center_y = object.view_bottom + int(SCREEN_HEIGHT *2/5)
+    object.lightcurve_list.append(object.go_to_planet_visit_sprite)
+
+
+    image_source = f'pictures/james_webb.png'
+
+    object.james_webb_sprite = arcade.Sprite(image_source, 0.1)
+    object.james_webb_sprite.center_x = object.view_left + int(SCREEN_WIDTH * 1/ 12)
+    object.james_webb_sprite.center_y = object.view_bottom + int(SCREEN_HEIGHT *3/4)
+    object.lightcurve_list.append(object.james_webb_sprite)
 
 
 
@@ -295,7 +402,38 @@ def home(object):
             'Du kannst dich mit\n mit den Pfeiltasten \n bewegen!',
             'Versuche, \n dich mittig auf \n die Leiter zu setzen!'
         ]
-
+    elif object.return_from_planet_visit:
+        utils.text_sprites(object)
+        if object.return_reason == 1:
+            print("this happens")
+            object.text_strings = [
+                'OJEEE!',
+                'Bei diesem \n Stern ware leider \n gar kein Planet!',
+                'Du bist umsonst  \n dorthin geflogen!'
+            ]
+        elif object.return_reason == 2:
+            print("this happens")
+            object.text_strings = [
+                'Hust Hust Hust!',
+                'Der Planet, \n den du besuchen wolltest \n ist leider voller Giftgas!',
+                'Du kannst nur  \n mit einer Gasmaske\n darauf landen!'
+            ]
+        elif object.return_reason == 3:
+            print("this happens")
+            object.text_strings = [
+                'BRRRR!',
+                'Der Planet \n den du besuchen wolltest \n ist leider viel zu kalt!',
+                'Du kannst nur  \n mit Kälteschutz\n darauf landen!'
+            ]
+        elif object.return_reason == 4:
+            print("this happens")
+            object.text_strings = [
+                'AUA!',
+                'Der Planet \n den du besuchen wolltest \n ist leider viel zu heiss!',
+                'Du kannst nur  \n mit Wärmeschutz\n darauf landen!'
+            ]
+    object.return_from_planet_visit = False
+    object.return_reason = 0
     # Create the 'physics engine'
     object.physics_engine = arcade.PhysicsEnginePlatformer(object.player_sprite,
                                                          object.wall_list,
@@ -454,12 +592,46 @@ def start_from_home(object):
 
 def planet(object):
     # Load the background image. Do this in the setup so we don't keep reloading it
-    try:
-        object.background = arcade.load_texture(f"pictures/{object.planet}_bkg.png")
-    except FileNotFoundError:
-        object.background = arcade.load_texture(f"pictures/{object.planet}_bkg.jpg")
+    if object.planet == 'PIC':
+        if object.telescope_stars_list[object.active_pic][10] ==0:
+            object.place = 'home'
+            object.return_from_planet_visit = True
+            object.return_reason =1
+            object.setup()
+            return
+        if object.telescope_stars_list[object.active_pic][13] ==1 and not object.safety_hazard[0]:
+            object.place = 'home'
+            object.return_from_planet_visit = True
+            object.return_reason =2
+            object.setup()
+            return
+        if object.telescope_stars_list[object.active_pic][14] ==1 and not object.safety_hazard[1]:
+            object.place = 'home'
+            object.return_from_planet_visit = True
+            object.return_reason = 3
+            object.setup()
+            return
+        print(object.safety_hazard, object.telescope_stars_list[object.active_pic][15])
+        if object.telescope_stars_list[object.active_pic][15] ==1 and not object.safety_hazard[2]:
+            object.place = 'home'
+            object.return_from_planet_visit = True
+            object.return_reason =4
+            object.setup()
+            return
+        # object.background = arcade.load_texture(f"pictures/planets/planet-type{object.telescope_stars_list[object.active_pic][10]}-val_1.png")
+        object.telescope_stars_list[object.active_pic][12] = 1
+        object.background = arcade.load_texture(f"pictures/planets/planet-type1-val_1.png")
+        object.safety_hazard = [False, False, False]
+    else:
+        try:
+            object.background = arcade.load_texture(f"pictures/{object.planet}_bkg.png")
+        except FileNotFoundError:
+            object.background = arcade.load_texture(f"pictures/{object.planet}_bkg.jpg")
 
-
+    arcade.set_viewport(57,
+                        SCREEN_WIDTH + 57,
+                        0,
+                        SCREEN_HEIGHT + 0)
 
 
     # Used to keep track of our scrolling
