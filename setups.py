@@ -26,7 +26,7 @@ def james_webb_report(object):
 
     gas_True = 'Es sieht so aus, als ob sich sehr viel Giftas\n' + 'auf dem Planeten befinden! Fahr bitte nur mit\n' + 'einer entsprechenden Gasmaske hin!\n'
 
-    hot_True = 'Wir wissen nicht genau wie heiß es auf\n' + 'dem Planeten ist, aber flieg bitte nicht ohne!\n' +'Wärmeschutz hin!\n'
+    hot_True = 'Wir wissen nicht genau wie heiß es auf\n' + 'dem Planeten ist, aber flieg bitte nicht ohne\n' +'Wärmeschutz hin!\n'
 
 
 
@@ -48,7 +48,7 @@ def james_webb_report(object):
         object.peer_review_text += none_True
 
 
-    object.object.peer_review_text += '\n' + 'Diese Untersuchung hat 50 Geld gekostet!\n'
+    object.peer_review_text += '\n' + 'Diese Untersuchung hat 50 Geld gekostet!\n'
     object.current_money -= 50
 
 
@@ -154,9 +154,9 @@ def peer_review_feedback(object, input, true):
 
 
     if num_correct >0:
-        additional_string = 'Übrigens: Die Lichtkurve zeigt auch das Signal '
+        additional_string = 'Übrigens: Die Lichtkurve zeigt auch das Signal \n'
     else:
-        additional_string = 'Die Lichtkurve zeigt das Signal '
+        additional_string = 'Die Lichtkurve zeigt das Signal \n'
 
     names = ['von Pulsation', 'eines Sternflecks', 'eines Planeten', 'eines Doppelsterns']
     add = []
@@ -268,7 +268,10 @@ def active_lightcurve(object, PIC, kind = 'full'): # kind either 'full', 'hours'
     object.lightcurve_list.append(object.go_to_planet_visit_sprite)
 
 
-    image_source = f'pictures/james_webb.png'
+    if object.telescope_stars_list[object.active_pic][9] == 1:
+        image_source = f'pictures/james_webb.png'
+    else:
+        image_source = f'pictures/james_webb_grey.png'
 
     object.james_webb_sprite = arcade.Sprite(image_source, 0.1)
     object.james_webb_sprite.center_x = object.view_left + int(SCREEN_WIDTH * 1/ 12)

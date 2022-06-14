@@ -339,7 +339,7 @@ class MyGame(arcade.Window):
             elif self.go_to_planet_visit_sprite.collides_with_point((x,y)) and self.telescope_stars_list[self.active_pic][12] == 0:
                 setups.go_to_planet_menu(self)
                 self.do_planet_visit = True
-            elif self.go_to_planet_visit_sprite.collides_with_point((x,y)):
+            elif self.james_webb_sprite.collides_with_point((x,y)) and self.telescope_stars_list[self.active_pic][9] == 1:
                 setups.james_webb_report(self)
                 self.do_james_webb_report = True
 
@@ -351,6 +351,7 @@ class MyGame(arcade.Window):
                     setups.active_lightcurve(self, PIC, kind=self.lightcurve_active_kind)
             elif self.do_james_webb_report:
                 if self.close_button.collides_with_point((x,y)):
+                    self.peer_review_text = ''
                     self.do_james_webb_report = False
                     setups.active_lightcurve(self, PIC, kind=self.lightcurve_active_kind)
 

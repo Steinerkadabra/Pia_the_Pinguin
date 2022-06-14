@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import interp1d
-import lightkurve as lk
 from tqdm import tqdm
 
 def star_png(color, smear_factor = 1.0, filename = 'test'):
