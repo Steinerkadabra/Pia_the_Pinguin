@@ -474,9 +474,9 @@ class MyGame(arcade.Window):
                     utils.text_sprites(self)
                     self.text_strings = [
                         'Das ist \n unser Whiteboard!',
-                        'Es bildet \n das Zentrum \n unserer Basis',
-                        'Hier \n siehst du welche \n Aufgabaen du erfüllen\n musst',
-                        'Du kannst \n jederzeit hierher kommen\n um deinen Fortschritt \n zu sehen',
+                        'Es bildet \n das Zentrum \n unserer Basis.',
+                        'Hier \n siehst du welche \n Aufgaben du erfüllen\n musst.',
+                        'Du kannst \n jederzeit hierher kommen\n um deinen Fortschritt \n zu sehen.',
                         'Sieh ihn \n dir doch gleich\n einmal an!'
                     ]
                     if self.text_val == len(self.text_strings) :
