@@ -32,6 +32,8 @@ def james_webb_report(object):
 
     none_True = 'Für diesen Planeten ist keine besonderen\n' + 'Schutzausrüstung notwendig!\n'
 
+    no_planet = 'In diesem Sternsystem befindet sich kein Planet.\n'
+
     object.peer_review_text = 'Liebe Pia,\n \n' + f'Das Kaiserpinguinen Teleskop hat sich PIC {int(object.telescope_stars_list[object.active_pic][0])} genau angesehen.\n'
     all_False = True
     if int(object.telescope_stars_list[object.active_pic][13]) == 1:
@@ -44,8 +46,12 @@ def james_webb_report(object):
         object.peer_review_text += hot_True
         all_False = False
 
-    if all_False:
+
+    if all_False and object.telescope_stars_list[object.active_pic][10] ==1:
         object.peer_review_text += none_True
+    else:
+        object.peer_review_text += no_planet
+
 
 
     object.peer_review_text += '\n' + 'Diese Untersuchung hat 50 Geld gekostet!\n'
