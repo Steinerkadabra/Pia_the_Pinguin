@@ -309,6 +309,7 @@ class MyGame(arcade.Window):
                 hit_planet = True
             elif self.moon_sprite.collides_with_point((x,y)):
                 self.planet = 'moon'
+
                 self.planet_gravity = 1.62/9.81
                 hit_planet = True
             elif self.jupiter_sprite.collides_with_point((x,y)):
@@ -509,9 +510,14 @@ class MyGame(arcade.Window):
         if self.place == 'on_planet':
             for sprite in self.collect_coin_list:
                 if sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)):
-                    self.planet_score[self.planet] += 5
-                    self.current_money += 5
-                    self.money_earned_from_planet_visits += 5
+                    if self.planet == 'PIC':
+                        self.planet_score[self.planet] += 5
+                        self.current_money += 5
+                        self.money_earned_from_planet_visits += 5
+                    else:
+                        self.planet_score[self.planet] += 1
+                        self.current_money += 1
+
                     print(self.planet_score)
                     self.collect_coin_list.remove(sprite)
 
