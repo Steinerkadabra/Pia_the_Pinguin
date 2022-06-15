@@ -117,7 +117,7 @@ class MyGame(arcade.Window):
 
         arcade.set_background_color(arcade.csscolor.BLACK)
 
-        self.planet_score = {'moon': 0, 'sun': 0, 'jupiter':0, 'mars':0}
+        self.planet_score = {'moon': 0, 'sun': 0, 'jupiter':0, 'mars':0, 'PIC': 0}
 
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """
@@ -370,7 +370,7 @@ class MyGame(arcade.Window):
                     self.lightcurve_list = arcade.SpriteList()
                     self.classification_values = [False, False, False, False]
                     self.lightcurve_active_kind = 'full'
-                    self.planet_gravity = self.telescope_stars_list[self.active_pic][11]/9.81
+                    self.planet_gravity = self.telescope_stars_list[self.active_pic][11]/9.81*3
                     # self.planet_gravity =10/9.81
                     self.current_money -= 300
 
@@ -509,8 +509,9 @@ class MyGame(arcade.Window):
         if self.place == 'on_planet':
             for sprite in self.collect_coin_list:
                 if sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)):
-                    self.planet_score[self.planet] += 1
-                    self.current_money += 1
+                    self.planet_score[self.planet] += 5
+                    self.current_money += 5
+                    self.money_earned_from_planet_visits += 5
                     print(self.planet_score)
                     self.collect_coin_list.remove(sprite)
 

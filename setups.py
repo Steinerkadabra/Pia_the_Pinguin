@@ -655,7 +655,10 @@ def planet(object):
     object.player_sprite.center_y = 96
     object.player_list.append(object.player_sprite)
 
-    utils.planet_sprites(object)
+    if object.planet == "PIC":
+        utils.PIC_planet_sprites(object)
+    else:
+        utils.planet_sprites(object)
     # Create the 'physics engine'
     object.physics_engine = arcade.PhysicsEnginePlatformer(object.player_sprite,
                                                          object.wall_list,
