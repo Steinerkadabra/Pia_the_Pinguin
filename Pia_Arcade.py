@@ -221,16 +221,16 @@ class MyGame(arcade.Window):
             return
         else:
             if key == arcade.key.UP or key == arcade.key.W:
-                if self.place ==  'telescope_view':
+                if self.place ==  'telescope_view' and not self.lightcurve_active:
                     self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
                 elif self.physics_engine.can_jump():
                     self.player_sprite.change_y = PLAYER_JUMP_SPEED
             elif key == arcade.key.DOWN or key == arcade.key.S:
-                if self.place =='telescope_view':
+                if self.place =='telescope_view' and not self.lightcurve_active:
                     self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
-            elif key == arcade.key.LEFT or key == arcade.key.A:
+            elif key == arcade.key.LEFT or key == arcade.key.A and not self.lightcurve_active:
                 self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
-            elif key == arcade.key.RIGHT or key == arcade.key.D:
+            elif key == arcade.key.RIGHT or key == arcade.key.D and not self.lightcurve_active:
                 self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
             elif key == arcade.key.SPACE and not self.do_peer_review and not self.do_planet_visit and not self.do_james_webb_report:
                 if self.place == 'telescope_view' and not self.do_peer_review and not self.do_planet_visit and not self.do_james_webb_report:

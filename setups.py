@@ -49,12 +49,13 @@ def james_webb_report(object):
 
     if all_False and object.telescope_stars_list[object.active_pic][10] ==1:
         object.peer_review_text += none_True
-    else:
+
+    if object.telescope_stars_list[object.active_pic][10] ==0:
         object.peer_review_text += no_planet
 
 
 
-    object.peer_review_text += '\n' + 'Diese Untersuchung hat 50 Geld gekostet!\n'
+    object.peer_review_text += '\n' + 'Diese Untersuchung hat 50 Gold gekostet!\n'
     object.current_money -= 50
 
 
