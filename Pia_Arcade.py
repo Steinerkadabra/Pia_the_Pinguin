@@ -80,12 +80,15 @@ class MyGame(arcade.Window):
         self.telescope_sprite = None
         self.visit_exoplanet_launch_sprite = None
 
+
         # Our physics engine
         self.physics_engine = None
 
         # Used to keep track of our scrolling
         self.view_bottom = 0
         self.view_left = 0
+        self.last_telescope_view_bottom = None
+        self.last_telescope_view_left = None
 
         # self.place = "starting_sequence"
         # self.place = "telescope_view"
@@ -243,24 +246,26 @@ class MyGame(arcade.Window):
                         PIC = self.telescope_stars_list[self.active_pic][0]
                         setups.active_lightcurve(self, PIC)
                         # print(self.telescope_stars_list[self.active_pic][0],self.telescope_stars_list[self.active_pic][1],self.telescope_stars_list[self.active_pic][4], )
-                elif self.stair_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)):
+                elif self.stair_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)) and self.place == "home":
                     self.choose_planet = True
                     utils.add_planets(self)
-                elif self.whiteboard_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)):
+                elif self.whiteboard_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)) and self.place == "home":
                     self.place = 'whiteboard'
                     arcade.set_viewport(0,
                                         SCREEN_WIDTH ,
                                         0,
                                         SCREEN_HEIGHT)
                     self.setup()
-                elif self.telescope_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)):
+                elif self.telescope_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)) and self.place == "home":
                     self.place = 'telescope_view'
                     arcade.set_viewport(0,
                                         SCREEN_WIDTH ,
                                         0,
                                         SCREEN_HEIGHT)
+                    self.view_bottom = self.last_telescope_view_bottom
+                    self.view_left = self.last_telescope_view_left
                     self.setup()
-            elif key == arcade.key.ESCAPE and not self.help_active and not self.lightcurve_active:
+            elif key == arcade.key.ESCAPE and not self.help_active and not self.lightcurve_activeand and not self.do_planet_visit and not self.do_james_webb_report:
             # elif key == arcade.key.ESCAPE and self.place != 'start_from_home':
                 self.place = 'home'
                 self.setup()
@@ -283,6 +288,10 @@ class MyGame(arcade.Window):
                 self.player_sprite.change_y = 0
             elif key == arcade.key.DOWN or key == arcade.key.S:
                 self.player_sprite.change_y = 0
+
+        if self.place == 'telescope_view':
+            self.last_telescope_view_left = self.view_left
+            self.last_telescope_view_bottom = self.view_bottom
 
 
     def on_mouse_press(self, x, y, button, modifiers):
