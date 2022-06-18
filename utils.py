@@ -79,23 +79,27 @@ def PIC_planet_sprites(object):
     for y in range(-400, 5000, 64):
         wall = arcade.Sprite(":resources:images/tiles/dirtCenter.png", TILE_SCALING)
         wall.alpha = 0
-        wall.center_x = 1500
+        wall.center_x = 2000
         wall.center_y = y
         object.wall_list.append(wall)
 
     num_things = randrange(30, 50)
 
+    posxs = []
+    posys = []
     for i in range(num_things):
         positions = PIC_PLANET_TILES_POSITIONS[randrange(len(PIC_PLANET_TILES_POSITIONS))]
         pos_x = randrange(200, 2000)
-        pos_y = randrange(200, 3000)
+        pos_y = randrange(200, 2600)
         for tup in positions:
             wall = arcade.Sprite(":resources:images/tiles/dirtCenter.png", TILE_SCALING)
-            # wall.alpha = 0
 
             wall.collision_radius = 1.0
             wall.center_x = tup[0]+ pos_x
             wall.center_y = tup[1] + pos_y
+            posxs.append(tup[0]+ pos_x)
+            posys.append(tup[1]+ pos_y)
+
             object.wall_list.append(wall)
 
 
@@ -105,8 +109,21 @@ def PIC_planet_sprites(object):
 
     # for tuple in PLANET_STAR_POSITIONS:
     for i in range(randrange(150, 500)):
+        collide = True
+
         pos_x = randrange(200, 2000)
-        pos_y = randrange(200, 3000)
+        pos_y = randrange(200, 2800)
+
+        while collide:
+            collide = False
+            pos_x = randrange(200, 2000)
+            pos_y = randrange(200, 2800)
+            for collidex, collidey in zip(posxs, posys):
+                if (pos_x- collidex)**2 + (pos_y - collidey)**2 < 100**2:
+                    collide = True
+
+
+
         sprite = arcade.Sprite(image_source, 1.25, hit_box_algorithm='Simple')
         sprite.scale = real_size * object.player_sprite.height / sprite.height * sprite.scale
 

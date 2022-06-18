@@ -288,6 +288,16 @@ def active_lightcurve(object, PIC, kind = 'full'): # kind either 'full', 'hours'
 
 
 def telescope_view(object):
+    # if object.last_telescope_view_bottom > -10000:
+    #     object.view_bottom = self.last_telescope_view_bottom
+    #     object.view_left = self.last_telescope_view_left
+
+    print(int(object.last_telescope_view_left), int(object.last_telescope_view_bottom))
+    arcade.set_viewport(0,
+                        SCREEN_WIDTH,
+                        0,
+                        SCREEN_HEIGHT)
+
     object.choose_planet = False
     object.background = arcade.load_texture("pictures/black_background.png")
     # object.in_conversation = True
@@ -325,8 +335,8 @@ def telescope_view(object):
 
     image_source = "pictures/crosshair.png"
     object.player_sprite = arcade.Sprite(image_source, CROSSHAIR_SCALING)
-    object.player_sprite.center_x = 64
-    object.player_sprite.center_y = 96
+    object.player_sprite.center_x = 64 + int(object.last_telescope_view_left)
+    object.player_sprite.center_y = 96 + int(object.last_telescope_view_bottom)
 
     object.player_sprite.collision_radius = 0.0
     object.player_list.append(object.player_sprite)
