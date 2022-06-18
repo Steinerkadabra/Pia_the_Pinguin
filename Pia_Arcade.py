@@ -104,6 +104,8 @@ class MyGame(arcade.Window):
         self.planet_conversation = False
         self.whiteboard_conversation = False
         self.telescope_conversation = False
+        self.telescope_view_conversation = False
+        self.lightcurve_active_conversation = False
 
         self.current_money = 0
         self.money_earned_from_classificiation = 0
@@ -186,8 +188,8 @@ class MyGame(arcade.Window):
         self.player_list.draw()
         if self.help_active:
             self.help_sprite_list.draw()
-        self.text_list.draw()
         self.lightcurve_list.draw()
+        self.text_list.draw()
         if self.place != 'whiteboard':
             self.money_coin_list.draw()
         text_manager.draw_text(self)
@@ -223,8 +225,8 @@ class MyGame(arcade.Window):
                 self.text_val += 1
             return
         else:
-            if key == arcade.key.UP or key == arcade.key.W:
-                if self.place ==  'telescope_view' and not self.lightcurve_active:
+            if (key == arcade.key.UP or key == arcade.key.W)  and not self.lightcurve_active:
+                if self.place ==  'telescope_view':
                     self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
                 elif self.physics_engine.can_jump():
                     self.player_sprite.change_y = PLAYER_JUMP_SPEED
@@ -247,6 +249,21 @@ class MyGame(arcade.Window):
                         setups.active_lightcurve(self, PIC)
                         self.last_telescope_view_left = self.player_sprite.center_x - 64
                         self.last_telescope_view_bottom = self.player_sprite.center_y - 96
+                        if not self.lightcurve_active_conversation:
+                            utils.text_sprites(self)
+                            self.text_strings = [
+                                'Schau! In der \n Mitte siehst du die  \n Lichtkurve des Sterns!',
+                                'Mit den Knöpfen\n darunter kannst du die \n Einstellung wählen!',
+                                'Hier sind auch noch\n  andere Steuerungen die du mit\n der Maus bedienen kannst.',
+                                'Auf der rechten Seite \n kannst du den Stern\n klassifizieren!',
+                                'Drücke dafür einfach \n auf die Arten and Variabilität\n die du findest.',
+                                'Wenn du alle ausgewählt \n hast, kannst du deine Analyse\n mit der Taube abschicken!',
+                                'Es kann auch sein \n das keine Variabilität im\n Stern ist.',
+                                'Wenn du einen Planeten\n gefunden hast, kannst du ihn\n links oben untersuchen!',
+                                'Das\n Kaiserpinguinenteleskop\n wird dir sagen ob du \n Schutzausrüstung brauchst.',
+                                'Mit der Rakete kannst\n zum Planeten reisen!',
+                            ]
+                            self.lightcurve_active_conversation = True
 
                         # print(self.telescope_stars_list[self.active_pic][0],self.telescope_stars_list[self.active_pic][1],self.telescope_stars_list[self.active_pic][4], )
                 elif self.stair_sprite.collides_with_point((self.player_sprite.center_x, self.player_sprite.center_y)) and self.place == "home":
@@ -291,6 +308,8 @@ class MyGame(arcade.Window):
 
     def on_mouse_press(self, x, y, button, modifiers):
 
+        print(self.telescope_list, self.text_strings)
+
         x = x + self.view_left
         y = y + self.view_bottom
         print(x,y)
@@ -325,7 +344,7 @@ class MyGame(arcade.Window):
                 self.rocket_flying = True
                 self.choose_planet = False
                 self.setup()
-        elif self.lightcurve_active:
+        elif self.lightcurve_active and not self.in_conversation:
             PIC = self.telescope_stars_list[self.active_pic][0]
             if self.full_button_sprite.collides_with_point((x,y)) and not self.do_peer_review and not self.do_planet_visit and not self.do_james_webb_report:
                 setups.active_lightcurve(self, PIC)

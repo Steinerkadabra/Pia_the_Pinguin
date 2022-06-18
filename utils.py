@@ -90,7 +90,7 @@ def PIC_planet_sprites(object):
     for i in range(num_things):
         positions = PIC_PLANET_TILES_POSITIONS[randrange(len(PIC_PLANET_TILES_POSITIONS))]
         pos_x = randrange(200, 2000)
-        pos_y = randrange(200, 2600)
+        pos_y = randrange(0, 2600)
         for tup in positions:
             wall = arcade.Sprite(":resources:images/tiles/dirtCenter.png", TILE_SCALING)
 
@@ -306,8 +306,14 @@ def text_sprites(object):
     image_source = "pictures/professor.png"
     object.professor_sprite = arcade.Sprite(image_source, 0.6*PROFESSOR_SCALING)
 
-    object.professor_sprite.center_x = 800+object.view_left + 150
-    object.professor_sprite.center_y = 190
+    if object.place == "telescope_view" and not object.lightcurve_active:
+        object.professor_sprite.center_x = object.view_left + 150
+        object.professor_sprite.center_y = 190
+    else:
+        object.professor_sprite.center_x = 800+object.view_left + 150
+        object.professor_sprite.center_y = 190
+
+    # print(object.professor_sprite.center_x, object.professor_sprite.center_y)
     object.text_list.append(object.professor_sprite)
 
     image_source = "pictures/bubble_rb.png"

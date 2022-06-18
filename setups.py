@@ -288,6 +288,8 @@ def active_lightcurve(object, PIC, kind = 'full'): # kind either 'full', 'hours'
 
 
 def telescope_view(object):
+
+
     # if object.last_telescope_view_bottom > -10000:
     #     object.view_bottom = self.last_telescope_view_bottom
     #     object.view_left = self.last_telescope_view_left
@@ -340,6 +342,17 @@ def telescope_view(object):
 
     object.player_sprite.collision_radius = 0.0
     object.player_list.append(object.player_sprite)
+
+    if not object.telescope_view_conversation:
+        utils.text_sprites(object)
+        object.text_strings = [
+            'So sieht der \n Nachthimmel durch unser  \n Teleskop aus!',
+            'Mit den Pfeiltasten \n kannst du dein Ziel \n bewegen!',
+            'Wenn du auf einen \n Stern zielst, kannst du \n ihn genauer studieren!',
+        ]
+        object.telescope_view_conversation = True
+
+
 
     object.physics_engine = arcade.PhysicsEngineSimple(object.player_sprite,
                                                          object.wall_list)
