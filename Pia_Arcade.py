@@ -113,6 +113,7 @@ class MyGame(arcade.Window):
 
         self.text_strings = []
         self.top_string = ''
+        self.information_string = ''
         self.text_val = 0
         self.in_conversation = False
         self.return_from_planet_visit = False
@@ -195,6 +196,8 @@ class MyGame(arcade.Window):
         text_manager.draw_text(self)
         arcade.draw_text(self.top_string, self.view_left + int(0.5 * SCREEN_WIDTH), self.view_bottom + int(0.9 * SCREEN_HEIGHT),
                          arcade.color.WHITE, 20 , align = 'center', anchor_x = 'center', anchor_y = 'center')
+        arcade.draw_text(self.information_string, self.view_left + int(0.975 * SCREEN_WIDTH), self.view_bottom + int(0.025 * SCREEN_HEIGHT),
+                         arcade.color.WHITE, 12 , align = 'right', anchor_x = 'right', anchor_y = 'center')
 
         if self.peer_review_text != '':
             arcade.draw_text(self.peer_review_text, self.view_left + int(SCREEN_WIDTH / 2) - 400,

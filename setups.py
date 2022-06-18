@@ -289,6 +289,8 @@ def active_lightcurve(object, PIC, kind = 'full'): # kind either 'full', 'hours'
 
 def telescope_view(object):
 
+    object.information_string = 'Spieldesign: Universität Innsbruck'
+
 
     # if object.last_telescope_view_bottom > -10000:
     #     object.view_bottom = self.last_telescope_view_bottom
@@ -360,7 +362,6 @@ def telescope_view(object):
 
 def starting_sequence(object):
 
-
     object.enable_physics = False
 
     object.in_conversation = True
@@ -393,6 +394,7 @@ def starting_sequence(object):
 def home(object):
     # Load the background image. Do this in the setup so we don't keep reloading it
     object.background = arcade.load_texture("pictures/back.jpg")
+    object.information_string = 'Spieldesign: Universität Innsbruck, Pinguin Design: Daniela Kurzböck'
 
     # Used to keep track of our scrolling
     object.view_bottom = 0
@@ -478,6 +480,7 @@ def whiteboard(object):
     # Load the background image. Do this in the setup so we don't keep reloading it
     object.background = arcade.load_texture("pictures/whiteboard_back.png")
 
+    object.information_string = 'Spieldesign: Universität Innsbruck'
     # Used to keep track of our scrolling
 
 
@@ -591,6 +594,8 @@ def start_from_home(object):
     # Load the background image. Do this in the setup so we don't keep reloading it
     object.background = arcade.load_texture("pictures/back.jpg")
 
+    object.information_string = 'Spieldesign: Universität Innsbruck, Pinguin Design: Daniela Kurzböck'
+
     # Used to keep track of our scrolling
     object.view_bottom = object.view_bottom
     object.view_left = object.view_left
@@ -660,6 +665,15 @@ def planet(object):
             object.background = arcade.load_texture(f"pictures/{object.planet}_bkg.png")
         except FileNotFoundError:
             object.background = arcade.load_texture(f"pictures/{object.planet}_bkg.jpg")
+    if object.planet == 'moon' or object.planet == 'jupiter':
+        object.information_string = 'Hintergrund: credit: NASA, Spieldesign: Universität Innsbruck, Pinguin Design: Daniela Kurzböck'
+    elif object.planet == 'mars':
+        object.information_string = 'Hintergrund: credit: NASA Jet Propulsion Laboratory, Spieldesign: Universität Innsbruck, Pinguin Design: Daniela Kurzböck'
+    elif object.planet == 'sun' :
+        object.information_string = 'Hintergrund: credit: JAXA/NASA Jet Propulsion Laboratory, Spieldesign: Universität Innsbruck, Pinguin Design: Daniela Kurzböck'
+    else:
+        object.information_string = 'Spieldesign: Universität Innsbruck, Pinguin Design: Daniela Kurzböck'
+
 
     arcade.set_viewport(57,
                         SCREEN_WIDTH + 57,
