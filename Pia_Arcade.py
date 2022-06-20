@@ -143,6 +143,7 @@ class MyGame(arcade.Window):
             setups.whiteboard(self)
 
         elif self.place == "telescope_view":
+            arcade.set_background_color(arcade.csscolor.BLACK)
             setups.telescope_view(self)
 
     def on_draw(self):
