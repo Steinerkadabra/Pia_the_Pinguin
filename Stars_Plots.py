@@ -128,17 +128,17 @@ def generate_stars_list():
 
         rand = np.random.uniform(1, 10, 1)[0]
         if  k_temps[star] < 5000:
-            if rand < 5:
+            if rand < 6:
                 spot.append(1) # 1 means spot, 0 means no spot
             else:
                 spot.append(0)
         elif  k_temps[star] < 10000:
-            if rand < 3:
+            if rand < 5:
                 spot.append(1) # 1 means spot, 0 means no spot
             else:
                 spot.append(0)
         else:
-            if rand == 1:
+            if rand <3 :
                 spot.append(1) # 1 means spot, 0 means no spot
             else:
                 spot.append(0)
@@ -147,7 +147,7 @@ def generate_stars_list():
         if rand <2:
             planet.append(rand) # 1 means planet, 0 means no planet
             planet_type.append(np.random.randint(1, high = 6))
-            planet_g.append(np.random.uniform(2, 100, 1)[0]/9.81)
+            planet_g.append(np.random.uniform(20, 100, 1)[0])
             planet_visited.append(0)
             gas = np.random.randint(1, high=6)
             if gas ==1:

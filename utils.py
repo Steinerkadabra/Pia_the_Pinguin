@@ -308,7 +308,7 @@ def text_sprites(object):
 
     if object.place == "telescope_view" and not object.lightcurve_active:
         object.professor_sprite.center_x = object.view_left + 150
-        object.professor_sprite.center_y = object.view_bottom + 190
+        object.professor_sprite.center_y =   190
     else:
         object.professor_sprite.center_x = 800+object.view_left + 150
         object.professor_sprite.center_y = object.view_bottom + 190

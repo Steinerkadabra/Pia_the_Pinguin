@@ -436,6 +436,7 @@ def home(object):
         object.text_strings = [
             'Das ist \n unsere Basis. \n Du bist Pia  \n der Pinguin!',
             'Du kannst dich mit\n mit den Pfeiltasten \n bewegen!',
+            'Mit der ESC\n  Taste kommst du jederzeit\n  hierher züruck!',
             'Versuche, \n dich mittig auf \n die Leiter zu setzen!'
         ]
     elif object.return_from_planet_visit:
@@ -658,7 +659,17 @@ def planet(object):
             object.setup()
             return
         val = randrange(1, 6)
-        object.background = arcade.load_texture(f"pictures/planets/planet-type{int(object.telescope_stars_list[object.active_pic][10])}-val_{val}.png")
+        type = int(object.telescope_stars_list[object.active_pic][10])
+        object.background = arcade.load_texture(f"pictures/planets/planet-type{type}-val_{val}.png")
+        if type == 1:
+            arcade.set_background_color([92, 153, 160])
+        elif type ==2 :
+            arcade.set_background_color([0, 0, 0])
+        elif type ==3 :
+            arcade.set_background_color([174, 175, 175])
+        else:
+            arcade.set_background_color([79, 164, 173])
+
         object.telescope_stars_list[object.active_pic][12] = 1
         # object.background = arcade.load_texture(f"pictures/planets/planet-type1-val_1.png")
         object.safety_hazard = [False, False, False]

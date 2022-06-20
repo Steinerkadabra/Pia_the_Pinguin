@@ -90,10 +90,10 @@ class MyGame(arcade.Window):
         self.last_telescope_view_bottom = 0
         self.last_telescope_view_left = 0
 
-        # self.place = "starting_sequence"
+        self.place = "starting_sequence"
         # self.place = "telescope_view"
         # self.place = 'whiteboard'
-        self.place = 'home'
+        # self.place = 'home'
         self.planet = None
         self.rocket_flying = False
         self.choose_planet = False
@@ -257,11 +257,11 @@ class MyGame(arcade.Window):
                             self.text_strings = [
                                 'Schau! In der \n Mitte siehst du die  \n Lichtkurve des Sterns!',
                                 'Mit den Knöpfen\n darunter kannst du die \n Einstellung wählen!',
-                                'Hier sind auch noch\n  andere Steuerungen die du mit\n der Maus bedienen kannst.',
+                                'Hier sind auch \n noch andere  Steuerungen \n die du mit der Maus \n bedienen kannst.',
                                 'Auf der rechten Seite \n kannst du den Stern\n klassifizieren!',
                                 'Drücke dafür einfach \n auf die Arten and Variabilität\n die du findest.',
                                 'Wenn du alle ausgewählt \n hast, kannst du deine Analyse\n mit der Taube abschicken!',
-                                'Es kann auch sein \n das keine Variabilität im\n Stern ist.',
+                                'Es kann auch sein, \n dass keine Variabilität im\n Stern ist.',
                                 'Wenn du einen Planeten\n gefunden hast, kannst du ihn\n links oben untersuchen!',
                                 'Das\n Kaiserpinguinenteleskop\n wird dir sagen ob du \n Schutzausrüstung brauchst.',
                                 'Mit der Rakete kannst\n zum Planeten reisen!',
@@ -325,6 +325,8 @@ class MyGame(arcade.Window):
             hit_planet = False
             x = x + self.view_left
             y = y + self.view_bottom
+
+            arcade.set_background_color([0, 0, 0])
             if self.mars_sprite.collides_with_point((x,y)):
                 self.planet = 'mars'
                 self.planet_gravity = 3.711/9.81
@@ -397,9 +399,11 @@ class MyGame(arcade.Window):
                     self.lightcurve_list = arcade.SpriteList()
                     self.classification_values = [False, False, False, False]
                     self.lightcurve_active_kind = 'full'
-                    self.planet_gravity = self.telescope_stars_list[self.active_pic][11]*3
+                    self.planet_gravity = self.telescope_stars_list[self.active_pic][11]/50/9.81*3
 
-                    self.planet_gravity = 12.5/9.81*3
+                    print(self.planet_gravity, "before")
+                    # self.planet_gravity = 4.5/9.81*3
+                    # print(self.planet_gravity, "after")
                     # self.planet_gravity =10/9.81
                     self.current_money -= 300
                     self.view_bottom = 0
@@ -435,6 +439,7 @@ class MyGame(arcade.Window):
 
         if self.enable_physics:
             self.physics_engine.update()
+
         if not self.place == "telescope_view":
             if self.place == 'home':
                 if self.player_sprite.change_x < -1:
@@ -444,12 +449,13 @@ class MyGame(arcade.Window):
                 else:
                     self.player_sprite.texture = arcade.load_texture("pictures/player.png")
             else:
-                if self.player_sprite.change_x < -1:
-                    self.player_sprite.texture = arcade.load_texture("pictures/player_left_w.png")
-                elif self.player_sprite.change_x > 1:
-                    self.player_sprite.texture = arcade.load_texture("pictures/player_right_w.png")
-                else:
-                    self.player_sprite.texture = arcade.load_texture("pictures/player_w.png")
+                if not self.place == "starting_sequence":
+                    if self.player_sprite.change_x < -1:
+                        self.player_sprite.texture = arcade.load_texture("pictures/player_left_w.png")
+                    elif self.player_sprite.change_x > 1:
+                        self.player_sprite.texture = arcade.load_texture("pictures/player_right_w.png")
+                    else:
+                        self.player_sprite.texture = arcade.load_texture("pictures/player_w.png")
 
 
         self.top_string = ''
