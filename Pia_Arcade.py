@@ -397,10 +397,13 @@ class MyGame(arcade.Window):
                     self.lightcurve_list = arcade.SpriteList()
                     self.classification_values = [False, False, False, False]
                     self.lightcurve_active_kind = 'full'
-                    self.planet_gravity = self.telescope_stars_list[self.active_pic][11]/9.81*3
+                    self.planet_gravity = self.telescope_stars_list[self.active_pic][11]*3
+
+                    self.planet_gravity = 12.5/9.81*3
                     # self.planet_gravity =10/9.81
                     self.current_money -= 300
-
+                    self.view_bottom = 0
+                    self.view_left = 0
                     arcade.set_viewport(57,
                                         SCREEN_WIDTH + 57,
                                         0,

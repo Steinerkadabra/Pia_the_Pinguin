@@ -60,7 +60,7 @@ def PIC_planet_sprites(object):
 
     # Create the ground
     # This shows using a loop to place multiple sprites horizontally
-    for x in range(-400, 2000, 64):
+    for x in range(-400, 2300, 64):
         wall = arcade.Sprite(":resources:images/tiles/dirtCenter.png", TILE_SCALING)
         # wall.alpha = 0
         wall.center_x = x
@@ -83,13 +83,13 @@ def PIC_planet_sprites(object):
         wall.center_y = y
         object.wall_list.append(wall)
 
-    num_things = randrange(30, 50)
+    num_things = randrange(30, 40)
 
     posxs = []
     posys = []
     for i in range(num_things):
         positions = PIC_PLANET_TILES_POSITIONS[randrange(len(PIC_PLANET_TILES_POSITIONS))]
-        pos_x = randrange(200, 2000)
+        pos_x = randrange(200, 1900)
         pos_y = randrange(0, 2600)
         for tup in positions:
             wall = arcade.Sprite(":resources:images/tiles/dirtCenter.png", TILE_SCALING)
@@ -308,10 +308,10 @@ def text_sprites(object):
 
     if object.place == "telescope_view" and not object.lightcurve_active:
         object.professor_sprite.center_x = object.view_left + 150
-        object.professor_sprite.center_y = 190
+        object.professor_sprite.center_y = object.view_bottom + 190
     else:
         object.professor_sprite.center_x = 800+object.view_left + 150
-        object.professor_sprite.center_y = 190
+        object.professor_sprite.center_y = object.view_bottom + 190
 
     # print(object.professor_sprite.center_x, object.professor_sprite.center_y)
     object.text_list.append(object.professor_sprite)

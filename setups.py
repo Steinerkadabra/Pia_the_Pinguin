@@ -1,6 +1,7 @@
 import arcade
 from  constants import *
 import utils
+from random import randrange
 
 
 def james_webb_report(object):
@@ -47,7 +48,7 @@ def james_webb_report(object):
         all_False = False
 
 
-    if all_False and object.telescope_stars_list[object.active_pic][10] ==1:
+    if all_False and object.telescope_stars_list[object.active_pic][10] in [1, 2,3, 4, 5]:
         object.peer_review_text += none_True
 
     if object.telescope_stars_list[object.active_pic][10] ==0:
@@ -656,9 +657,10 @@ def planet(object):
             object.return_reason =4
             object.setup()
             return
-        # object.background = arcade.load_texture(f"pictures/planets/planet-type{object.telescope_stars_list[object.active_pic][10]}-val_1.png")
+        val = randrange(1, 6)
+        object.background = arcade.load_texture(f"pictures/planets/planet-type{int(object.telescope_stars_list[object.active_pic][10])}-val_{val}.png")
         object.telescope_stars_list[object.active_pic][12] = 1
-        object.background = arcade.load_texture(f"pictures/planets/planet-type1-val_1.png")
+        # object.background = arcade.load_texture(f"pictures/planets/planet-type1-val_1.png")
         object.safety_hazard = [False, False, False]
     else:
         try:
@@ -675,10 +677,6 @@ def planet(object):
         object.information_string = 'Spieldesign: Universität Innsbruck, Pinguin Design: Daniela Kurzböck'
 
 
-    arcade.set_viewport(57,
-                        SCREEN_WIDTH + 57,
-                        0,
-                        SCREEN_HEIGHT + 0)
 
 
     # Used to keep track of our scrolling
