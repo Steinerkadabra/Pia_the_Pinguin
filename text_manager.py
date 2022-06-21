@@ -9,7 +9,7 @@ def draw_text(object):
         TEXT_SIZE1 = 34
         TEXT_SIZE2 = 14
     else:
-        TEXT_SIZE1 = 24
+        TEXT_SIZE1 = 20
         TEXT_SIZE2 = 8
     # print(object.text_val, object.text_strings, len(object.text_list) )
     if len(object.text_strings) > 0 and object.text_val <  len(object.text_strings):
