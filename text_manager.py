@@ -9,8 +9,8 @@ def draw_text(object):
         TEXT_SIZE1 = 34
         TEXT_SIZE2 = 14
     else:
-        TEXT_SIZE1 = 20
-        TEXT_SIZE2 = 8
+        TEXT_SIZE1 = 17
+        TEXT_SIZE2 = 7
     # print(object.text_val, object.text_strings, len(object.text_list) )
     if len(object.text_strings) > 0 and object.text_val <  len(object.text_strings):
         center_x = object.text_list[-1].center_x - int(object.text_list[-1].width * 0.05)
