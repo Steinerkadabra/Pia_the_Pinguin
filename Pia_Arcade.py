@@ -198,12 +198,12 @@ class MyGame(arcade.Window):
         arcade.draw_text(self.top_string, self.view_left + int(0.5 * SCREEN_WIDTH), self.view_bottom + int(0.9 * SCREEN_HEIGHT),
                          arcade.color.WHITE, 20 , align = 'center', anchor_x = 'center', anchor_y = 'center', font_name=("Dejavu Sans"))
         arcade.draw_text(self.information_string, self.view_left + int(0.975 * SCREEN_WIDTH), self.view_bottom + int(0.025 * SCREEN_HEIGHT),
-                         arcade.color.WHITE, 12 , align = 'right', anchor_x = 'right', anchor_y = 'center', font_name=("Dejavu Sans"))
+                         arcade.color.WHITE, 10 , align = 'right', anchor_x = 'right', anchor_y = 'center', font_name=("Dejavu Sans"))
 
         if self.peer_review_text != '':
             arcade.draw_text(self.peer_review_text, self.view_left + int(SCREEN_WIDTH / 2) - 400,
             self.view_bottom + int(SCREEN_HEIGHT / 2) + 200,
-            arcade.color.BLACK, 22, align = 'left', anchor_x = 'left', anchor_y = 'top', font_name=("Dejavu Sans"))
+            arcade.color.BLACK, 18, align = 'left', anchor_x = 'left', anchor_y = 'top', font_name=("Dejavu Sans"))
 
         if self.current_money < 0:
             color = arcade.color.RED

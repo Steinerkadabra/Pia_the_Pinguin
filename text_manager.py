@@ -6,11 +6,11 @@ from  constants import *
 def draw_text(object):
     # utils.text_sprites(object)
     if object.place == 'starting_sequence':
-        TEXT_SIZE1 = 34
-        TEXT_SIZE2 = 14
+        TEXT_SIZE1 = 30
+        TEXT_SIZE2 = 12
     else:
-        TEXT_SIZE1 = 17
-        TEXT_SIZE2 = 7
+        TEXT_SIZE1 = 20
+        TEXT_SIZE2 = 8
     # print(object.text_val, object.text_strings, len(object.text_list) )
     if len(object.text_strings) > 0 and object.text_val <  len(object.text_strings):
         center_x = object.text_list[-1].center_x - int(object.text_list[-1].width * 0.05)
