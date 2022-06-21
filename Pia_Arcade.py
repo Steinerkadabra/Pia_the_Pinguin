@@ -312,11 +312,11 @@ class MyGame(arcade.Window):
 
     def on_mouse_press(self, x, y, button, modifiers):
 
-        print(self.telescope_list, self.text_strings)
+        # print(self.telescope_list, self.text_strings)
 
         x = x + self.view_left
         y = y + self.view_bottom
-        print(x,y)
+        # print(x,y)
         # print(self.view_left)
         # print(self.view_bottom)
 
@@ -402,7 +402,7 @@ class MyGame(arcade.Window):
                     self.lightcurve_active_kind = 'full'
                     self.planet_gravity = self.telescope_stars_list[self.active_pic][11]/50/9.81*3
 
-                    print(self.planet_gravity, "before")
+                    # print(self.planet_gravity, "before")
                     # self.planet_gravity = 4.5/9.81*3
                     # print(self.planet_gravity, "after")
                     # self.planet_gravity =10/9.81
@@ -554,7 +554,7 @@ class MyGame(arcade.Window):
                         self.planet_score[self.planet] += 1
                         self.current_money += 1
 
-                    print(self.planet_score)
+                    # print(self.planet_score)
                     self.collect_coin_list.remove(sprite)
 
 
