@@ -16,13 +16,13 @@ def draw_text(object):
         center_x = object.text_list[-1].center_x - int(object.text_list[-1].width * 0.05)
         center_y = object.text_list[-1].center_y +  2*int(object.text_list[-1].height * 0.05)
         arcade.draw_text(object.text_strings[object.text_val], center_x, center_y,
-                         arcade.color.BLACK, TEXT_SIZE1 , align = 'center', anchor_x = 'center', anchor_y = 'center')
+                         arcade.color.BLACK, TEXT_SIZE1 , align = 'center', anchor_x = 'center', anchor_y = 'center', font_name=("Dejavu Sans"))
 
         center_x = object.text_list[-1].center_x - int(object.text_list[-1].width * 0.05)
         center_y = object.text_list[-1].center_y - int(object.text_list[-1].height * 0.25)
 
         arcade.draw_text('Drücke Leerzeichen um fortzufahren!', center_x, center_y,
-                         arcade.color.BLACK, TEXT_SIZE2 , align = 'center', anchor_x = 'center', anchor_y = 'center')
+                         arcade.color.BLACK, TEXT_SIZE2 , align = 'center', anchor_x = 'center', anchor_y = 'center', font_name=("Dejavu Sans"))
     else:
         object.in_conversation = False
         object.text_val = 0
