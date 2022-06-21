@@ -110,10 +110,13 @@ class MyGame(arcade.Window):
         self.current_money = 0
         self.money_earned_from_classificiation = 0
         self.money_earned_from_planet_visits = 0
+        self.cheater_money = 0
+        self.last_peer_review_money = 0
 
         self.text_strings = []
         self.top_string = ''
         self.information_string = ''
+        self.cheater_string = ''
         self.text_val = 0
         self.in_conversation = False
         self.return_from_planet_visit = False
@@ -199,6 +202,9 @@ class MyGame(arcade.Window):
                          arcade.color.WHITE, 20 , align = 'center', anchor_x = 'center', anchor_y = 'center', font_name=("Dejavu Sans"))
         arcade.draw_text(self.information_string, self.view_left + int(0.975 * SCREEN_WIDTH), self.view_bottom + int(0.025 * SCREEN_HEIGHT),
                          arcade.color.WHITE, 10 , align = 'right', anchor_x = 'right', anchor_y = 'center', font_name=("Dejavu Sans"))
+
+        arcade.draw_text(self.cheater_string, self.view_left + int(0.5 * SCREEN_WIDTH), self.view_bottom + int(0.5 * SCREEN_HEIGHT),
+                         arcade.color.RED, 30 , align = 'center', anchor_x = 'center', anchor_y = 'center', font_name=("Dejavu Sans"))
 
         if self.peer_review_text != '':
             arcade.draw_text(self.peer_review_text, self.view_left + int(SCREEN_WIDTH / 2) - 400,
@@ -364,8 +370,14 @@ class MyGame(arcade.Window):
             elif self.send_results_sprite.collides_with_point((x,y)) and self.telescope_stars_list[self.active_pic][9] == 0:
                 # print(self.telescope_stars_list[self.active_pic][5:9])
                 # print(self.classification_values)
-                setups.peer_review_feedback(self, self.classification_values, self.telescope_stars_list[self.active_pic][5:9])
-                self.do_peer_review = True
+                if self.do_peer_review:
+                    self.current_money += self.last_peer_review_money
+                    self.cheater_money += self.last_peer_review_money
+                    if self.cheater_money > 1000:
+                        self.cheater_string = "Du hast geschummelt!"
+                else:
+                    setups.peer_review_feedback(self, self.classification_values, self.telescope_stars_list[self.active_pic][5:9])
+                    self.do_peer_review = True
             elif self.go_to_planet_visit_sprite.collides_with_point((x,y)) and self.telescope_stars_list[self.active_pic][12] == 0:
                 setups.go_to_planet_menu(self)
                 self.do_planet_visit = True

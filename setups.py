@@ -200,6 +200,8 @@ def peer_review_feedback(object, input, true):
 
     object.money_earned_from_classificiation += int(earned_money)
 
+    object.last_peer_review_money =  int(earned_money)
+
 
 
 
